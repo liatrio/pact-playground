@@ -1,0 +1,38 @@
+[project]
+name = "open-api-producer"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "Patrick Paulino", email = "ppaulino@ritchiebrothers.com" }
+]
+dependencies = [
+    "pact-python>=2.2.0",
+    "tomli>=2.0.1",
+    "fastapi>=0.111.0",
+    "pydantic>=2.8.2",
+    "requests>=2.32.3",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[tool.rye]
+managed = true
+virtual = true
+dev-dependencies = [
+    "pytest>=8.2.2",
+]
+
+[tool.rye.scripts]
+dev = { cmd = "uvicorn app:app --reload --port 8082 --host 0.0.0.0", description = "Run the development server"}
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::PendingDeprecationWarning",
+]
+
+[tool.pylint."MESSAGES CONTROL"]
+disable = [
+    "missing-function-docstring",
+    "missing-module-docstring",
+    "missing-class-docstring",
+]

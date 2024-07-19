@@ -1,0 +1,40 @@
+[project]
+name = "consumer"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "Patrick Paulino", email = "ppaulino@ritchiebrothers.com" }
+]
+dependencies = [
+    "flask>=3.0.3",
+    "requests>=2.32.3",
+    "requests-mock>=1.12.1",
+    "pact-python>=2.2.0",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[tool.rye]
+managed = true
+virtual = true
+dev-dependencies = [
+    "pytest>=8.2.2",
+]
+
+[tool.rye.scripts]
+dev = { cmd = "flask run --debug --port 8083 --host 0.0.0.0", env = { FLASK_APP = "./app.py" } }
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::PendingDeprecationWarning",
+]
+
+[tool.pylint."MESSAGES CONTROL"]
+disable = [
+    "missing-function-docstring",
+    "missing-module-docstring",
+    "missing-class-docstring",
+]
+
+[tool.pylint.custom]
+min-public-methods = 1
