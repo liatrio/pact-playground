@@ -2,11 +2,14 @@
 
 I wrote this document to help me understand the bi-directional contract testing process. I use [Pactflow](https://pactflow.io/) as the Pact Broker and importantly as the component which converts my OAS(OpenAPI Specficiation) and JUnit test results into a contract. I use the [Pactflow CLI](https://docs.pactflow.io/docs/bi-directional-contract-testing/publishing) to demonstrate the process that will likely be used in the pipeline for the bi-directional contract testing. I'm most famaliar with Python so I chose to focus my efforts in that realm as I can quickly ramp up and get a working example of the bi-directional contract testing process. Obviously the configuration for a Java project would be different but the overarching process should be the same.
 
-## Dependencies
+## Pre-requisites
 
 - [Acces to Pactflow](https://ritchiebros.atlassian.net/wiki/spaces/mkteng/pages/217514570/Access+to+tools#Pactflow)
-- [Pact CLIs](https://docs.pactflow.io/docs/bi-directional-contract-testing/publishing)
-- [Pact Python](https://docs.pact.io/implementation_guides/python/readme)
+- [Pact Standalone CLIs](https://docs.pactflow.io/docs/bi-directional-contract-testing/publishing)
+- [rye](https://rye.astral.sh/)
+  - `rye sync` sets up a python virtual environment and installs dependencies
+  - `rye test` runs the pytest tests
+  - `rye run dev` runs the web services locally
 
 ## Starting with the provider side
 
