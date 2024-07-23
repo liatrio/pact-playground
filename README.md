@@ -5,11 +5,12 @@ I wrote this document to help me understand the bi-directional contract testing 
 ## Pre-requisites
 
 - [Acces to Pactflow](https://ritchiebros.atlassian.net/wiki/spaces/mkteng/pages/217514570/Access+to+tools#Pactflow)
-- [Pact Standalone CLIs](https://docs.pactflow.io/docs/bi-directional-contract-testing/publishing)
-- [rye](https://rye.astral.sh/)
-  - `rye sync` sets up a python virtual environment and installs dependencies
-  - `rye test` runs the pytest tests
-  - `rye run dev` runs the web services locally
+- [Pact Standalone CLIs](https://docs.pactflow.io/docs/bi-directional-contract-testing/publishing) - `npm install -g @pact-foundation/pact-cli`
+- [rye](https://rye.astral.sh/) - `brew install rye`
+  - For each of the apps, `cd` into the respective directories and run the following commands
+    - `rye sync` sets up a python virtual environment and installs dependencies
+    - `rye test` runs the pytest tests
+    - `rye run dev` runs the web services locally
 
 ## Starting with the provider side
 
