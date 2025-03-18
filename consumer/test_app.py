@@ -7,7 +7,7 @@ from pact import Consumer, Provider
 # Define a fixture for the Pact mock server
 @pytest.fixture
 def pact_mock_server_fixture():
-    pact = Consumer("consumer").has_pact_with(Provider("producer"), port=1234)
+    pact = Consumer("consumer").has_pact_with(Provider("provider"), port=1234)
     pact.start_service()
     yield pact
     pact.stop_service()

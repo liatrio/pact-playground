@@ -16,19 +16,19 @@ Contract testing is crucial for ensuring reliable integration between services b
 
 ## Consumer-Driven Contract Testing
 
-In this approach, the consumer defines the contract, and the producer verifies it. This is demonstrated in the relationship between the `consumer` and `producer` components.
+In this approach, the consumer defines the contract, and the provider verifies it. This is demonstrated in the relationship between the `consumer` and `provider` components.
 
-**Summary**: Consumer-driven contract testing allows the consumer to specify the interactions it expects from the producer. This ensures that the producer can meet the consumer's needs, leading to more reliable integrations and fewer surprises during deployment.
+**Summary**: Consumer-driven contract testing allows the consumer to specify the interactions it expects from the provider. This ensures that the provider can meet the consumer's needs, leading to more reliable integrations and fewer surprises during deployment.
 
 ### Consumer-Driven Steps
 
 #### Consumer-Driven Consumer Side
 
-- **Write Tests**: Define expected interactions with the producer using a mock service.
-- **Generate Contract**: Run tests to generate a contract file (`consumer-producer.json`).
+- **Write Tests**: Define expected interactions with the provider using a mock service.
+- **Generate Contract**: Run tests to generate a contract file (`consumer-provider.json`).
 - **Publish Contract**: Use the `pact-broker` CLI to publish the contract to the Pact Broker.
 
-#### Consumer-Driven Producer Side
+#### Consumer-Driven provider Side
 
 - **Retrieve Contract**: Fetch the contract from the Pact Broker.
 - **Verify Contract**: Run verification tests to ensure compatibility with the consumer's expectations.
@@ -37,26 +37,26 @@ In this approach, the consumer defines the contract, and the producer verifies i
 ### Consumer-Driven Webhooks
 
 1. **Contract Publication Notification**
-   - **Purpose**: Notify the producer when a new contract is published by the consumer.
-   - **Action**: Trigger the producer's CI/CD pipeline to verify the contract against the current implementation.
-   - **Implementation**: Set up a webhook in the Pact Broker to listen for contract publication events and trigger a verification job on the producer's side.
-   - **Benefits**: Automates the notification and verification process, reducing manual intervention and ensuring the producer is aware of new consumer expectations.
+   - **Purpose**: Notify the provider when a new contract is published by the consumer.
+   - **Action**: Trigger the provider's CI/CD pipeline to verify the contract against the current implementation.
+   - **Implementation**: Set up a webhook in the Pact Broker to listen for contract publication events and trigger a verification job on the provider's side.
+   - **Benefits**: Automates the notification and verification process, reducing manual intervention and ensuring the provider is aware of new consumer expectations.
 
 2. **Verification Result Notification**
-   - **Purpose**: Inform the consumer of the verification results once the producer has tested the contract.
+   - **Purpose**: Inform the consumer of the verification results once the provider has tested the contract.
    - **Action**: Update the consumer's status or trigger further actions based on the verification outcome.
    - **Implementation**: Use a webhook to send the verification results back to the consumer's CI/CD system.
    - **Benefits**: Provides immediate feedback to the consumer, allowing for quick adjustments if necessary.
 
 3. **Deployment Notification**
-   - **Purpose**: Notify the consumer when the producer deploys a new version that has passed contract verification.
-   - **Action**: Trigger consumer-side tests to ensure compatibility with the new producer version.
-   - **Implementation**: Set up a webhook to notify the consumer's system whenever a new producer version is deployed.
-   - **Benefits**: Ensures that the consumer is always compatible with the latest producer version, reducing integration issues.
+   - **Purpose**: Notify the consumer when the provider deploys a new version that has passed contract verification.
+   - **Action**: Trigger consumer-side tests to ensure compatibility with the new provider version.
+   - **Implementation**: Set up a webhook to notify the consumer's system whenever a new provider version is deployed.
+   - **Benefits**: Ensures that the consumer is always compatible with the latest provider version, reducing integration issues.
 
 ## Bi-Directional Contract Testing
 
-This approach involves both the consumer and provider defining and verifying contracts. It is demonstrated in the relationship between the `consumer` and `open-api-producer` components.
+This approach involves both the consumer and provider defining and verifying contracts. It is demonstrated in the relationship between the `consumer` and `open-api-provider` components.
 
 **Summary**: Bi-directional contract testing ensures that both the consumer and provider agree on the contract. This mutual agreement helps prevent integration issues by verifying that both sides meet each other's expectations, leading to smoother deployments and more robust integrations.
 
@@ -71,7 +71,7 @@ This approach involves both the consumer and provider defining and verifying con
 #### Bi-Directional Consumer Side
 
 - **Write Tests**: Define expected interactions with the provider using a mock service.
-- **Generate Contract**: Run tests to generate a contract file (`consumer-open-api-producer.json`).
+- **Generate Contract**: Run tests to generate a contract file (`consumer-open-api-provider.json`).
 - **Verify Provider Spec**: Retrieve and verify the provider's OpenAPI specification.
 
 ### Bi-Directional Webhooks
@@ -118,7 +118,7 @@ This example demonstrates starting with the provider side of bi-directional cont
 
     ```shell
     pactflow publish-provider-contract openapi_broken.json\
-        --provider open-api-producer \
+        --provider open-api-provider \
         --provider-app-version 0.0.1 \
         --broker-base-url "$PACT_BROKER_BASE_URL" \
         --broker-token "$PACT_BROKER_TOKEN" \
@@ -135,7 +135,7 @@ This example demonstrates starting with the provider side of bi-directional cont
 
     ```shell
     pact-broker can-i-deploy \
-        --pacticipant open-api-producer \
+        --pacticipant open-api-provider \
         --version 0.0.1 \
         --to-environment test \
         --broker-base-url "$PACT_BROKER_BASE_URL" \
@@ -148,7 +148,7 @@ This example demonstrates starting with the provider side of bi-directional cont
 
     ```shell
     pact-broker record-deployment \
-    --pacticipant open-api-producer \
+    --pacticipant open-api-provider \
     --version latest \
     --environment test \
     --broker-base-url "$PACT_BROKER_BASE_URL" \
@@ -169,7 +169,7 @@ This example demonstrates starting with the consumer side of bi-directional cont
 3. The consumer uploads the Consumer Contract to Pactflow.
 
     ```shell
-    pact-broker publish consumer-open-api-producer.json \
+    pact-broker publish consumer-open-api-provider.json \
         --broker-base-url "$PACT_BROKER_BASE_URL" \
         --broker-token "$PACT_BROKER_TOKEN" \
         --consumer-app-version 0.0.2
@@ -256,7 +256,7 @@ When you install the Pact CLIs, you get a bunch of binaries to interact with the
 ### Short-Term Goals
 
 - Fix the consumer unit tests since they are always passing even when they should be failing.
-- Build more understanding around the consumer mocking the producer.
+- Build more understanding around the consumer mocking the provider.
 - Walk through a scenario where the consumer needs to publish a breaking change.
 - Walk through a scenario where the provider needs to publish a breaking change.
 - Demo a use case of the webhook.
@@ -265,14 +265,14 @@ When you install the Pact CLIs, you get a bunch of binaries to interact with the
 
 - Integrate this workflow with the existing pact lab in RB.
 - Feedback from pact CLI's worth digging into:
-  - Add Pact verification tests to the open-api-producer build. See https://docs.pact.io/go/provider_verification
-  - Configure separate open-api-producer pact verification build and webhook to trigger it when the pact content changes. See https://docs.pact.io/go/webhooks
-- Previous producer versions remain active even after a new version is deployed; we may need to look into how to remove the old versions.
+  - Add Pact verification tests to the open-api-provider build. See https://docs.pact.io/go/provider_verification
+  - Configure separate open-api-provider pact verification build and webhook to trigger it when the pact content changes. See https://docs.pact.io/go/webhooks
+- Previous provider versions remain active even after a new version is deployed; we may need to look into how to remove the old versions.
 - Show an example of the consumer using the OpenAPI spec to define model and request/response objects to use in tests and then using Pact to verify the contract.
 
     ```shell
     CONSUMER      | C.VERSION | PROVIDER          | P.VERSION | SUCCESS? | RESULT#
     --------------|-----------|-------------------|-----------|----------|--------
-    consumer      | 0.0.3     | open-api-producer | 0.0.3     | true     | 1      
-    consumer      | 0.0.3     | open-api-producer | latest    | true     | 2    
+    consumer      | 0.0.3     | open-api-provider | 0.0.3     | true     | 1      
+    consumer      | 0.0.3     | open-api-provider | latest    | true     | 2    
     ```

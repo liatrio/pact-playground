@@ -8,12 +8,12 @@ export PACT_BROKER_TOKEN="<your_pact_broker_token>"
 rye test
 
 # Publish both pact files to the broker
-pact-broker publish userapiclient-producer.json \
+pact-broker publish userapiclient-provider.json \
   --broker-base-url "$PACT_BROKER_BASE_URL" \
   --broker-token "$PACT_BROKER_TOKEN" \
   --consumer-app-version latest
 
-pact-broker publish userapiclient-open-api-producer.json \
+pact-broker publish userapiclient-open-api-provider.json \
   --broker-base-url "$PACT_BROKER_BASE_URL" \
   --broker-token "$PACT_BROKER_TOKEN" \
   --consumer-app-version latest

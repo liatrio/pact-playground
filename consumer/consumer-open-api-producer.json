@@ -3,7 +3,7 @@
     "name": "consumer"
   },
   "provider": {
-    "name": "open-api-producer"
+    "name": "open-api-provider"
   },
   "interactions": [
     {

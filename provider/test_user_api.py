@@ -1,4 +1,3 @@
-import pytest
 import threading
 import time
 from pact import Verifier
@@ -16,10 +15,10 @@ def test_provider():
     # Give the server a moment to start up
     time.sleep(1)
 
-    verifier = Verifier(provider='producer', provider_base_url='http://localhost:8082')
+    verifier = Verifier(provider='provider', provider_base_url='http://localhost:8082')
 
     # Assuming the pact file is in the current directory
-    pact_file_url = '../consumer/consumer-producer.json'
+    pact_file_url = '../consumer/consumer-provider.json'
 
     # Verify the provider against the pact file without setting up states
     output, _ = verifier.verify_pacts(pact_file_url)

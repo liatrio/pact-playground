@@ -1,6 +1,6 @@
-I, [2025-03-18T11:19:10.207416 #37959]  INFO -- : Cleared interactions
-I, [2025-03-18T11:19:10.210310 #37959]  INFO -- : Registered expected interaction GET /user
-D, [2025-03-18T11:19:10.210423 #37959] DEBUG -- : {
+I, [2025-03-18T16:57:32.253850 #20559]  INFO -- : Cleared interactions
+I, [2025-03-18T16:57:32.257313 #20559]  INFO -- : Registered expected interaction GET /user
+D, [2025-03-18T16:57:32.257430 #20559] DEBUG -- : {
   "description": "a request for a user",
   "providerState": "a user exists",
   "request": {
@@ -19,8 +19,8 @@ D, [2025-03-18T11:19:10.210423 #37959] DEBUG -- : {
   },
   "metadata": null
 }
-I, [2025-03-18T11:19:10.212494 #37959]  INFO -- : Received request GET /user
-D, [2025-03-18T11:19:10.212555 #37959] DEBUG -- : {
+I, [2025-03-18T16:57:32.259897 #20559]  INFO -- : Received request GET /user
+D, [2025-03-18T16:57:32.259967 #20559] DEBUG -- : {
   "path": "/user",
   "query": "",
   "method": "get",
@@ -33,8 +33,8 @@ D, [2025-03-18T11:19:10.212555 #37959] DEBUG -- : {
     "Version": "HTTP/1.1"
   }
 }
-I, [2025-03-18T11:19:10.212662 #37959]  INFO -- : Found matching response for GET /user
-D, [2025-03-18T11:19:10.212688 #37959] DEBUG -- : {
+I, [2025-03-18T16:57:32.260121 #20559]  INFO -- : Found matching response for GET /user
+D, [2025-03-18T16:57:32.260164 #20559] DEBUG -- : {
   "status": 200,
   "headers": {
   },
@@ -44,5 +44,5 @@ D, [2025-03-18T11:19:10.212688 #37959] DEBUG -- : {
     "name": "John Doe"
   }
 }
-I, [2025-03-18T11:19:10.215156 #37959]  INFO -- : Verifying - interactions matched
-I, [2025-03-18T11:19:10.216955 #37959]  INFO -- : Writing pact for producer to /Users/patrick/Projects/liatrio/pact-playground/consumer/consumer-producer.json
+I, [2025-03-18T16:57:32.262406 #20559]  INFO -- : Verifying - interactions matched
+I, [2025-03-18T16:57:32.265059 #20559]  INFO -- : Writing pact for provider to /Users/patrick/Projects/liatrio/pact-playground/consumer/consumer-provider.json

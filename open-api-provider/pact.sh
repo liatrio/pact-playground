@@ -9,7 +9,7 @@ rye test -- -junitxml=results.xml
 
 # Publish the provider contract to the Pact Broker from OAS spec with success
 pactflow publish-provider-contract openapi.json \
-  --provider open-api-producer \
+  --provider open-api-provider \
   --provider-app-version latest \
   --broker-base-url "$PACT_BROKER_BASE_URL" \
   --broker-token "$PACT_BROKER_TOKEN" \
@@ -19,26 +19,26 @@ pactflow publish-provider-contract openapi.json \
   --verification-success \
   --verifier="pytest"
 
-# Check if the latest version of the open-api-producer can be deployed to the test environment
+# Check if the latest version of the open-api-provider can be deployed to the test environment
 pact-broker can-i-deploy \
-  --pacticipant open-api-producer \
+  --pacticipant open-api-provider \
   --version latest \
   --to-environment test \
   --broker-base-url "$PACT_BROKER_BASE_URL" \
   --broker-token "$PACT_BROKER_TOKEN"
 
-# Record the deployment of the latest version of the open-api-producer to the test environment
+# Record the deployment of the latest version of the open-api-provider to the test environment
 pact-broker record-deployment \
-  --pacticipant open-api-producer \
+  --pacticipant open-api-provider \
   --version latest \
   --environment test \
   --branch main \
   --broker-base-url "$PACT_BROKER_BASE_URL" \
   --broker-token "$PACT_BROKER_TOKEN"
 
-# Record the release of the latest version of the open-api-producer in the test environment
+# Record the release of the latest version of the open-api-provider in the test environment
 pact-broker record-release \
-  --pacticipant open-api-producer \
+  --pacticipant open-api-provider \
   --version latest \
   --environment test \
   --broker-base-url "$PACT_BROKER_BASE_URL" \

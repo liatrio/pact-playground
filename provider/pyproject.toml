@@ -1,16 +1,14 @@
 [project]
-name = "open-api-producer"
+name = "provider"
 version = "0.1.0"
 description = "Add your description here"
 authors = [
     { name = "Patrick Paulino", email = "ppaulino@ritchiebrothers.com" }
 ]
 dependencies = [
+    "flask>=3.0.3",
     "pact-python>=2.2.0",
     "tomli>=2.0.1",
-    "fastapi>=0.111.0",
-    "pydantic>=2.8.2",
-    "requests>=2.32.3",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"
@@ -23,7 +21,7 @@ dev-dependencies = [
 ]
 
 [tool.rye.scripts]
-dev = { cmd = "uvicorn app:app --reload --port 8082 --host 0.0.0.0", description = "Run the development server"}
+dev = { cmd = "flask run --debug --port 8082 --host 0.0.0.0", env = { FLASK_APP = "./app.py" } }
 
 [tool.pytest.ini_options]
 filterwarnings = [
@@ -34,5 +32,4 @@ filterwarnings = [
 disable = [
     "missing-function-docstring",
     "missing-module-docstring",
-    "missing-class-docstring",
 ]
