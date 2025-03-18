@@ -8,27 +8,27 @@ export PACT_BROKER_TOKEN="<your_pact_broker_token>"
 rye test
 
 # Publish both pact files to the broker
-pact-broker publish userapiclient-provider.json \
+pact-broker publish consumer-provider.json \
   --broker-base-url "$PACT_BROKER_BASE_URL" \
   --broker-token "$PACT_BROKER_TOKEN" \
   --consumer-app-version latest
 
-pact-broker publish userapiclient-open-api-provider.json \
+pact-broker publish consumer-open-api-provider.json \
   --broker-base-url "$PACT_BROKER_BASE_URL" \
   --broker-token "$PACT_BROKER_TOKEN" \
   --consumer-app-version latest
 
-# Check if the latest version of the UserApiClient can be deployed to the test environment
+# Check if the latest version of the consumer can be deployed to the test environment
 pact-broker can-i-deploy \
-  --pacticipant UserApiClient \
+  --pacticipant consumer \
   --version latest \
   --to-environment test \
   --broker-base-url "$PACT_BROKER_BASE_URL" \
   --broker-token "$PACT_BROKER_TOKEN"
 
-# Record the deployment of the latest version of the UserApiClient to the test environment
+# Record the deployment of the latest version of the consumer to the test environment
 pact-broker record-deployment \
-  --pacticipant UserApiClient \
+  --pacticipant consumer \
   --version latest \
   --environment test \
   --branch main \
