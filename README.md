@@ -11,6 +11,7 @@ Contract testing is crucial for ensuring reliable integration between services b
 - [rye](https://rye.astral.sh/): A Python tool for managing virtual environments and dependencies. Install with `brew install rye`.
   - For each of the apps, `cd` into the respective directories and run the following commands:
     - `rye sync` sets up a Python virtual environment and installs dependencies.
+    - `rye lint` uses ruff to lint Python files.
     - `rye test` runs the pytest tests.
     - `rye run dev` runs the web services locally.
 
@@ -28,7 +29,7 @@ In this approach, the consumer defines the contract, and the provider verifies i
 - **Generate Contract**: Run tests to generate a contract file (`consumer-provider.json`).
 - **Publish Contract**: Use the `pact-broker` CLI to publish the contract to the Pact Broker.
 
-#### Consumer-Driven provider Side
+#### Consumer-Driven Provider Side
 
 - **Retrieve Contract**: Fetch the contract from the Pact Broker.
 - **Verify Contract**: Run verification tests to ensure compatibility with the consumer's expectations.
@@ -94,21 +95,15 @@ This approach involves both the consumer and provider defining and verifying con
    - **Implementation**: Set up a webhook to notify the consumer's system whenever a new provider version is deployed.
    - **Benefits**: Reduces manual intervention and speeds up the feedback loop, ensuring robust integration.
 
-4. **Environment Change Notification**
-   - **Purpose**: Notify both consumer and provider teams when a contract is moved to a new environment (e.g., from staging to production).
-   - **Action**: Trigger environment-specific tests or deployments.
-   - **Implementation**: Use webhooks to automate environment-specific workflows.
-   - **Benefits**: Ensures that both sides are aware of environment changes, reducing the risk of deployment issues.
-
 ### Starting with the Provider Side
 
 This example demonstrates starting with the provider side of bi-directional contract testing, inspired by the [Stoplight blog](https://blog.stoplight.io/bi-directional-contract-testing-a-basic-guide-to-api-contract-testing-compatibilities).
 
-1. The provider creates their OpenAPI specification (OAS) by hand or using a code generator tool. This specification is the Provider Contract.
+1. The provider creates their OpenAPI specification (OAS) by hand or using a code generator tool. This specification is the provider contract.
 
     ℹ️ **Note:** *In this example, FastAPI is used, a Python framework with built-in OpenAPI support.*
 
-2. The provider tests the Provider Contract using a functional API testing tool (such as ReadyAPI or Postman).
+2. The provider tests the consumer contract using a functional API testing tool (such as ReadyAPI or Postman). The assumption here is the consumer contract exists, if it doesn't this step is optional.
 
     ```shell
     rye test -- --junitxml=results.xml
@@ -142,7 +137,7 @@ This example demonstrates starting with the provider side of bi-directional cont
         --broker-token "$PACT_BROKER_TOKEN"
     ```
 
-5. Pactflow generates a Verification Result, determining if the Provider Contract is compatible with the Consumer Contract.
+5. Pactflow generates a verification result, determining if the provider contract is compatible with the consumer contract.
 
 6. If the contracts are compatible, the provider deploys their interface and records the deployment using pact-broker-record-deployment.
 
@@ -186,7 +181,7 @@ This example demonstrates starting with the consumer side of bi-directional cont
         --broker-token "$PACT_BROKER_TOKEN"
     ```
 
-5. Pactflow generates a Verification Result, determining if the Consumer Contract is compatible with the Provider Contract.
+5. Pactflow generates a verification result, determining if the consumer contract is compatible with the provider contract.
 6. If the contract passes the verification test, the consumer can deploy their application and record the deployment using the command pact-broker-record-deployment.
 
 ## Breaking Change Detection
@@ -196,7 +191,7 @@ Breaking changes in contract testing can occur when:
 1. A consumer adds a new expectation (e.g., a new field or endpoint) that the provider does not support.
 2. A provider makes a change (e.g., removes or renames a field) that breaks an existing consumer.
 
-The `can-i-deploy` tool in the API Hub for Contract Testing helps detect such situations by performing a contract comparison. It checks if the consumer contract is a valid subset of the provider contract in the target environment.
+The `can-i-deploy` tool in the API Hub for contract testing helps detect such situations by performing a contract comparison. It checks if the consumer contract is a valid subset of the provider contract in the target environment.
 
 ### Provider Breaking Changes
 
@@ -218,30 +213,6 @@ The `can-i-deploy` tool in the API Hub for Contract Testing helps detect such si
 - The tool prevents consumers from deploying changes that providers do not yet support.
 
 This section is relevant to both consumer-driven and bi-directional contract testing, as breaking change detection is crucial for maintaining compatibility and preventing integration issues.
-
-## CLI References
-
-When you install the Pact CLIs, you get a bunch of binaries to interact with the Pact Broker APIs hosted by PactFlow and importantly the PactFlow-specific APIs required for OAS contract publishing. Here are some of the most important ones:
-
-- `pactflow`: Used for publishing OAS contracts to PactFlow, required only from the provider side. This command is essential for sharing the provider's API specification with the Pact Broker, enabling consumers to verify their contracts against it.
-
-    ```shell
-    pactflow publish-provider-contract CONTRACT_FILE --provider=PROVIDER -a, --provider-app-version=PROVIDER_APP_VERSION -b, --broker-base-url=BROKER_BASE_URL # Publish provider contract to PactFlow
-    ```
-
-- `pact-broker`: Houses most of the functionality you will require. It is used for various operations such as checking deployment readiness and recording deployments. For some use cases, it may be more beneficial to use the SDKs. There are many commands available, so make sure to check them out with `pact-broker --help`.
-
-    - **can-i-deploy**: Checks if the specified pacticipant version is safe to be deployed. This command is crucial for ensuring that all contracts are compatible before deploying a new version.
-
-    ```shell
-    pact-broker can-i-deploy -a, --pacticipant=PACTICIPANT -b, --broker-base-url=BROKER_BASE_URL # Checks if the specified pacticipant version is safe to be deployed.
-    ```
-
-    - **record-deployment**: Records the deployment of a pacticipant version to an environment. This helps keep track of which versions are deployed where, ensuring that the correct versions are running in each environment.
-
-    ```shell
-    pact-broker record-deployment --environment=ENVIRONMENT -a, --pacticipant=PACTICIPANT -b, --broker-base-url=BROKER_BASE_URL -e, --version=VERSION # Record deployment of a pacticipant version to an environment. See https://docs.pact.io/go/record-deployment for more information.
-    ```
 
 ## Links
 
@@ -265,8 +236,8 @@ When you install the Pact CLIs, you get a bunch of binaries to interact with the
 
 - Integrate this workflow with the existing pact lab in RB.
 - Feedback from pact CLI's worth digging into:
-  - Add Pact verification tests to the open-api-provider build. See https://docs.pact.io/go/provider_verification
-  - Configure separate open-api-provider pact verification build and webhook to trigger it when the pact content changes. See https://docs.pact.io/go/webhooks
+  - Add Pact verification tests to the open-api-provider build. See [Pact Verification](https://docs.pact.io/go/provider_verification)
+  - Configure separate open-api-provider pact verification build and webhook to trigger it when the pact content changes. See [Webhooks](https://docs.pact.io/go/webhooks)
 - Previous provider versions remain active even after a new version is deployed; we may need to look into how to remove the old versions.
 - Show an example of the consumer using the OpenAPI spec to define model and request/response objects to use in tests and then using Pact to verify the contract.
 
