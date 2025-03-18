@@ -1,0 +1,9 @@
+{
+    "python.testing.pytestArgs": [
+        "consumer",
+        "producer",
+        "open-api-producer"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
+}

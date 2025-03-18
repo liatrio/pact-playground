@@ -1,0 +1,48 @@
+I, [2025-03-18T11:19:10.207416 #37959]  INFO -- : Cleared interactions
+I, [2025-03-18T11:19:10.210310 #37959]  INFO -- : Registered expected interaction GET /user
+D, [2025-03-18T11:19:10.210423 #37959] DEBUG -- : {
+  "description": "a request for a user",
+  "providerState": "a user exists",
+  "request": {
+    "method": "get",
+    "path": "/user"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+    },
+    "body": {
+      "email": "john.doe@example.com",
+      "id": 1,
+      "name": "John Doe"
+    }
+  },
+  "metadata": null
+}
+I, [2025-03-18T11:19:10.212494 #37959]  INFO -- : Received request GET /user
+D, [2025-03-18T11:19:10.212555 #37959] DEBUG -- : {
+  "path": "/user",
+  "query": "",
+  "method": "get",
+  "headers": {
+    "Host": "localhost:1234",
+    "User-Agent": "python-requests/2.32.3",
+    "Accept-Encoding": "gzip, deflate",
+    "Accept": "*/*",
+    "Connection": "keep-alive",
+    "Version": "HTTP/1.1"
+  }
+}
+I, [2025-03-18T11:19:10.212662 #37959]  INFO -- : Found matching response for GET /user
+D, [2025-03-18T11:19:10.212688 #37959] DEBUG -- : {
+  "status": 200,
+  "headers": {
+  },
+  "body": {
+    "email": "john.doe@example.com",
+    "id": 1,
+    "name": "John Doe"
+  }
+}
+I, [2025-03-18T11:19:10.215156 #37959]  INFO -- : Verifying - interactions matched
+I, [2025-03-18T11:19:10.216955 #37959]  INFO -- : Writing pact for producer to /Users/patrick/Projects/liatrio/pact-playground/consumer/consumer-producer.json
